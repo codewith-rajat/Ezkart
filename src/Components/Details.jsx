@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import allData from './AllData';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 function Details() {
     const params = useParams();
@@ -17,14 +19,15 @@ function Details() {
         }
     }
 
-    return (<>
-        <div className='bg-stone-100' >
+    return (<div className='bg-stone-100 min-h-screen'>
+    <Navbar />
+        <div className='bg-stone-100 ' >
             <Link className='text-red-500 text-4xl' to={'/'} ><IoMdArrowRoundBack /></Link>
         </div>
-        <div className='flex justify-center item-center h-screen bg-stone-100'>
-            <div className='flex bg-white item-center w-3/4 h-3/4 my-20'>
+        <div className='flex justify-center items-center bg-stone-100'>
+            <div className='flex bg-white w-3/4 h-3/4'>
                 <div className='p-8 w-1/2'>
-                    <img className="object-contain h-full w-full" src={clickedItem.image} alt={clickedItem.name} />
+                    <img className="object-contain h-full w-full max-h-[400px] shadow-lg" src={clickedItem.image} alt={clickedItem.name} />
                 </div>
                 <div className='w-1/2 pt-20'>
                     <h2 className='text-3xl font-medium ' >{clickedItem.name}</h2>
@@ -37,7 +40,8 @@ function Details() {
                 </div>
             </div>
         </div>
-    </>
+        <Footer />
+    </div>
     );
 }
 
