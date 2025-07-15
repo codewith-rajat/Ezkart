@@ -1,14 +1,24 @@
-import React,{useState} from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import React, { useEffect, useState } from 'react';
 import ItemsList from './ItemsList';
-import allData from './AllData';
 import NoMatching from './NoMatchingItems';
+import { getProductList } from './api';
+import Loading from './loading';
 function ItemListPage() {
     const [query, setQuery] = useState('');
     const [sort, setSort] = useState('default');
-    const data = allData.filter(function (item) {
-        const lowerCaseTitle = item.name.toLowerCase();
+
+    const [productList, setProductList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(function () {
+        const token = getProductList();
+        token.then(function (products) {
+            setProductList(products);
+            setLoading(false);
+        });
+    }, []);
+
+    const data = productList.filter(function (item) {
+        const lowerCaseTitle = item.title.toLowerCase();
         const lowerCaseQuery = query.toLowerCase();
         return lowerCaseTitle.indexOf(lowerCaseQuery) != -1;
     });
@@ -20,9 +30,13 @@ function ItemListPage() {
         setSort(event.target.value);
     }
 
+    if (loading) {
+        return (<Loading />);
+    }
+
     if (sort == 'name') {
         data.sort(function (x, y) {
-            return (x.name < y.name ? -1 : 1);
+            return (x.title < y.title ? -1 : 1);
         })
     } else if (sort == "pricelh") {
         data.sort(function (x, y) {
@@ -35,35 +49,34 @@ function ItemListPage() {
         })
     }
     return (
-        <div className="bg-stone-100">
-            <Navbar />
-            <div className="bg-white mt-12 mx-40 flex justify-end">
+        <>
+            <div className="bg-white mt-12 max-w-6xl mx-auto flex items-center justify-end px-9 py-12">
                 <input
                     type="text"
                     value={query}
                     placeholder='search'
-                    className='border-2 border-gray-500 rounded-md p-1 self-end mr-8'
+                    className='border-2 border-gray-500 rounded-md p-1 mr-8'
                     onChange={handleQueryChange} />
-                <label for="category" className=" text-black font-semibold"></label>
-                <select onChange={handleSortChange} name="category" id="category" className='mr-28 mt-8 border-2 p-1 rounded-md' value={sort} >
+                <label for="sort" className=" text-black font-semibold"></label>
+                <select onChange={handleSortChange} name="sort" id="category" className='mr-28 border-2 p-1 rounded-md' value={sort} >
                     <option value="default">Default sort</option>
                     <option value="name">Sort by name</option>
                     <option value="pricelh">Sort by price: Low to High</option>
                     <option value="pricehl">Sort by price: High to Low</option>
                 </select>
             </div>
-            <div className="bg-white mx-40">
-                {data.length>0 && <ItemsList products={data} />}
-                {data.length==0 && <NoMatching>No Matching Results Found</NoMatching>}
+            <div className="bg-white max-w-6xl mx-auto">
+                {data.length > 0 && <ItemsList products={data} />}
+                {data.length == 0 && <NoMatching>No Matching Results Found</NoMatching>}
             </div>
-            <div className="flex mx-40 px-28 py-16 bg-white  gap-2">
-
-                <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">1</button>
-                <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">2</button>
-                <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">3</button>
+            <div className="flex mx-auto py-16 bg-white  gap-2 max-w-6xl">
+                <div className='gap-2 flex' >
+                    <button className="ml-10 border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">1</button>
+                    <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">2</button>
+                    <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">3</button>
+                </div>
             </div>
-            <Footer />
-        </div>
+        </>
     );
 }
 export default ItemListPage;

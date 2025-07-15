@@ -1,10 +1,15 @@
 import React from 'react'
+import { MdOutlineShoppingBag } from 'react-icons/md'
 
-export default function Navbar() {
+export default function Navbar({cartCount}) {
   return (
-    <div>
-        <nav className="bg-white shadow-md px-16 py-2">
-            <img className="w-24 h-12 ml-24" src="https://static.vecteezy.com/system/resources/previews/014/018/563/non_2x/amazon-logo-on-transparent-background-free-vector.jpg" alt="logo" />
+    <div className='bg-white' >
+        <nav className="mx-auto py-2 max-w-6xl flex justify-between">
+            <img className="max-w-xl h-12 ml-24" src="https://static.vecteezy.com/system/resources/previews/014/018/563/non_2x/amazon-logo-on-transparent-background-free-vector.jpg" alt="logo" />
+        <div className='flex flex-col items-center text-red-500' >
+          <MdOutlineShoppingBag className='text-4xl' />
+          <div className='-my-7' >{cartCount}</div>
+        </div>
         </nav>
     </div>
   )
