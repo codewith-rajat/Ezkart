@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
 import { getProductData } from './api';
@@ -9,11 +9,12 @@ import NotFound from './NotFound';
 function Details({onAddToCart}) {
     const params = useParams();
     const id = +(params.id);
-
+    console.log("detail rerunning")
+    console.log(id);
     const [product, setProduct] = useState();
     const [loading,setLoading] = useState(true);
     const [count,setCount] = useState(1);
-    console.log(id);
+
     useEffect(function () {
         const promise = getProductData(id);
         promise.then(function (product) {
@@ -27,22 +28,25 @@ function Details({onAddToCart}) {
     function handleCountChange(event){
         setCount(+event.target.value);
     }
-
+    const navigate = useNavigate();
     function handleButtonClick(){
+        setCount(1);
+        navigate(`/details/${id+1}`);
         onAddToCart(id,count);
     }
 
     function handleCartCount(){
+        setLoading(true);
         setCount(1);
     }
 
     if(loading){
         return <Loading />
     }
-
     if(!product){
         return <NotFound/>;
     }
+
 
     return (
         <>
