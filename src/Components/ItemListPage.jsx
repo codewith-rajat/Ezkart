@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import ItemsList from './ItemsList';
 import NoMatching from './NoMatchingItems';
 import { getProductList } from './api';
 import Loading from './loading';
+
 function ItemListPage() {
     const [query, setQuery] = useState('');
     const [sort, setSort] = useState('default');
-
+    
     const [productList, setProductList] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(function () {
@@ -16,38 +17,42 @@ function ItemListPage() {
             setLoading(false);
         });
     }, []);
-
-    const data = productList.filter(function (item) {
-        const lowerCaseTitle = item.title.toLowerCase();
-        const lowerCaseQuery = query.toLowerCase();
-        return lowerCaseTitle.indexOf(lowerCaseQuery) != -1;
-    });
+    
+    const filteredData = useMemo(function () {
+        let data = productList.filter(function (item) {
+            const lowerCaseTitle = item.title.toLowerCase();
+            const lowerCaseQuery = query.toLowerCase();
+            return lowerCaseTitle.indexOf(lowerCaseQuery) != -1;
+        });
+        if (sort == 'name') {
+            data = [...data].sort(function (x, y) {
+                return (x.title < y.title ? -1 : 1);
+            });
+        } else if (sort == "pricelh") {
+            data = [...data].sort(function (x, y) {
+                return x.price - y.price;
+            });
+        }
+        else if (sort == "pricehl") {
+            data = [...data].sort(function (x, y) {
+                return y.price - x.price;
+            });
+        }
+        return data;
+    }, [productList, query, sort]);
+    
     function handleQueryChange(event) {
         const newQuery = event.target.value;
         setQuery(newQuery);
-    }
+    };
     function handleSortChange(event) {
         setSort(event.target.value);
-    }
+    };
 
     if (loading) {
         return (<Loading />);
     }
 
-    if (sort == 'name') {
-        data.sort(function (x, y) {
-            return (x.title < y.title ? -1 : 1);
-        })
-    } else if (sort == "pricelh") {
-        data.sort(function (x, y) {
-            return x.price - y.price;
-        })
-    }
-    else if (sort == "pricehl") {
-        data.sort(function (x, y) {
-            return y.price - x.price;
-        })
-    }
     return (
         <>
             <div className="bg-white mt-12 max-w-6xl mx-auto flex items-center justify-end px-9 py-12">
@@ -66,8 +71,8 @@ function ItemListPage() {
                 </select>
             </div>
             <div className="bg-white max-w-6xl mx-auto">
-                {data.length > 0 && <ItemsList products={data} />}
-                {data.length == 0 && <NoMatching>No Matching Results Found</NoMatching>}
+                {filteredData.length > 0 && <ItemsList products={filteredData} />}
+                {filteredData.length == 0 && <NoMatching>No Matching Results Found</NoMatching>}
             </div>
             <div className="flex mx-auto py-16 bg-white  gap-2 max-w-6xl">
                 <div className='gap-2 flex' >

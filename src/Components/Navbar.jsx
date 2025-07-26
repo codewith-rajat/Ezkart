@@ -1,7 +1,7 @@
-import React from 'react'
+import React,{memo} from 'react'
 import { MdOutlineShoppingBag } from 'react-icons/md'
 
-export default function Navbar({cartCount}) {
+function Navbar({cartCount}) {
   return (
     <div className='bg-white' >
         <nav className="mx-auto py-2 max-w-6xl flex justify-between">
@@ -14,3 +14,4 @@ export default function Navbar({cartCount}) {
     </div>
   )
 }
+export default memo(Navbar);

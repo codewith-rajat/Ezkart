@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState,useCallback } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
 import { getProductData } from './api';
@@ -9,8 +9,7 @@ import NotFound from './NotFound';
 function Details({onAddToCart}) {
     const params = useParams();
     const id = +(params.id);
-    console.log("detail rerunning")
-    console.log(id);
+    console.log("detail rerunning",id)
     const [product, setProduct] = useState();
     const [loading,setLoading] = useState(true);
     const [count,setCount] = useState(1);
@@ -25,20 +24,21 @@ function Details({onAddToCart}) {
         });
     }, [id]);
 
-    function handleCountChange(event){
+    const handleCountChange = useCallback(function (event){
         setCount(+event.target.value);
-    }
+    },[]);
     const navigate = useNavigate();
-    function handleButtonClick(){
+    const handleButtonClick=useCallback(function (){
         setCount(1);
-        navigate(`/details/${id+1}`);
         onAddToCart(id,count);
-    }
+        navigate(`/details/${id+1}`);
+        setLoading(true);
+    },[id,count,navigate,onAddToCart]);
 
-    function handleCartCount(){
+    const handleCartCount = useCallback(function (){
         setLoading(true);
         setCount(1);
-    }
+    },[]);
 
     if(loading){
         return <Loading />
