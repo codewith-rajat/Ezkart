@@ -9,7 +9,6 @@ import NotFound from './NotFound';
 function Details({onAddToCart}) {
     const params = useParams();
     const id = +(params.id);
-    console.log("detail rerunning",id)
     const [product, setProduct] = useState();
     const [loading,setLoading] = useState(true);
     const [count,setCount] = useState(1);
