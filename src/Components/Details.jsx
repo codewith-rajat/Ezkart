@@ -3,7 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
 import { getProductData } from './api';
-import Loading from './loading';
+import Loading from './Loading';
 import NotFound from './NotFound';
 
 function Details({onAddToCart}) {

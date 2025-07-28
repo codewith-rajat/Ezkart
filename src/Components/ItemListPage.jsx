@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import ItemsList from './ItemsList';
 import NoMatching from './NoMatchingItems';
 import { getProductList } from './api';
-import Loading from './loading';
+import Loading from './Loading';
 
 function ItemListPage() {
     const [query, setQuery] = useState('');

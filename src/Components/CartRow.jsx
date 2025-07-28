@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getProductData } from "./api";
-import Loading from "./loading";
+import Loading from "./Loading";
 import { CiCircleRemove } from "react-icons/ci";
 
 
