@@ -74,7 +74,7 @@ function ItemListPage() {
                 {filteredData.length > 0 && <ItemsList products={filteredData} />}
                 {filteredData.length == 0 && <NoMatching>No Matching Results Found</NoMatching>}
             </div>
-            <div className="flex mx-auto py-16 bg-white  gap-2 max-w-6xl">
+            <div className="flex mx-auto py-16 bg-white  gap-2 max-w-6xl mb-20">
                 <div className='gap-2 flex' >
                     <button className="ml-10 border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">1</button>
                     <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">2</button>
