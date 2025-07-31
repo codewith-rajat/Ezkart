@@ -31,6 +31,7 @@ function ForgotPassword() {
         },
         validationSchema: schema,
         onSubmit: callForgotPassword,
+        validateOnMount:true
     });
 
     return (

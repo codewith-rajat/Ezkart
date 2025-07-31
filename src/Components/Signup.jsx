@@ -6,6 +6,7 @@ import Button from "./Button";
 import { Link } from "react-router-dom";
 import { MdOutlineDriveFileRenameOutline, MdOutlineMail, MdOutlinePersonOutline } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import Input from "./Input";
 
 function Signup() {
 
@@ -52,6 +53,7 @@ function Signup() {
             },
             onSubmit: callSignupApi,
             validationSchema: schema,
+            validateOnMount:true
         });
     return (
         <>
@@ -61,86 +63,81 @@ function Signup() {
                     className="flex flex-col"
                 >
                     <IoCartOutline className='text-white text-7xl self-center' />
-                    <div className="mt-6 w-72 flex items-center border-2 border-white rounded-sm p-2">
-                        <label htmlFor="fullname" className="sr-only">Full Name</label>
-                        <MdOutlineDriveFileRenameOutline className="mr-2 text-white text-lg" />
-                        <input
-                            type="text"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            required
-                            name="fullname"
-                            value={values.fullname}
-                            id="fullname"
-                            className="w-full focus:outline-none text-white"
-                            placeholder="ENTER FULL NAME"
-                        />
-                    </div>
-                    {touched.fullname && errors.fullname && (<div className="text-red-400 mt-1 text-sm">{errors.fullname}</div>)}
-                    <div className="mt-4 w-72 flex items-center border-2 border-white rounded-sm p-2">
-                        <label htmlFor="email" className="sr-only">Email</label>
-                        <MdOutlineMail className="mr-2 text-white text-lg" />
-                        <input
-                            type="email"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            required
-                            name="email"
-                            value={values.email}
-                            id="email"
-                            className="w-full focus:outline-none text-white"
-                            placeholder="ENTER EMAIL"
-                        />
-                    </div>
-                    {touched.email && errors.email && (<div className="text-red-400 mt-1 text-sm">{errors.email}</div>)}
-                    <div className="mt-4 w-72 flex items-center border-2 border-white rounded-sm p-2">
-                        <label htmlFor="username" className="sr-only">Username</label>
-                        <MdOutlinePersonOutline className='mr-2 text-white text-lg' />
-                        <input
-                            type="text"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            required
-                            name="username"
-                            value={values.username}
-                            id="username"
-                            className="w-full focus:outline-none text-white"
-                            placeholder="USERNAME"
-                        />
-                    </div>
-                    {touched.username && errors.username && (<div className="text-red-400 mt-1 text-sm">{errors.username}</div>)}
-                    <div className="mt-4 w-72 flex items-center border-2 border-white rounded-sm p-2">
-                        <label htmlFor="password" className="sr-only">Password</label>
-                        <RiLockPasswordFill className='mr-2 text-white text-lg' />
-                        <input
-                            type="password"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            required
-                            name="password"
-                            value={values.password}
-                            id="password"
-                            className="w-full focus:outline-none text-white"
-                            placeholder="PASSWORD"
-                        />
-                    </div>
-                    {touched.password && errors.password && (<div className="text-red-400 mt-1 text-sm">{errors.password}</div>)}
-                    <div className="mt-4 w-72 flex items-center border-2 border-white rounded-sm p-2">
-                        <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
-                        <RiLockPasswordFill className='mr-2 text-white text-lg' />
-                        <input
-                            type="password"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            required
-                            name="confirmPassword"
-                            value={values.confirmPassword}
-                            id="confirmPassword"
-                            className="w-full focus:outline-none text-white"
-                            placeholder="CONFIRM PASSWORD"
-                        />
-                    </div>
-                    {touched.confirmPassword && errors.confirmPassword && (<div className="text-red-400 mt-1 text-sm">{errors.confirmPassword}</div>)}
+                    <Input
+                        label="Full Name"
+                        type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        name="fullname"
+                        value={values.fullname}
+                        id="fullname"
+                        placeholder="ENTER FULL NAME"
+                        touched={touched.fullname}
+                        error={errors.fullname}
+                        autoComplete="fullname"
+                        icon={MdOutlineDriveFileRenameOutline}
+                    />
+                    <Input
+                        label="Email"
+                        type="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        name="email"
+                        value={values.email}
+                        id="email"
+                        placeholder="ENTER EMAIL"
+                        touched={touched.email}
+                        error={errors.email}
+                        autoComplete="email"
+                        icon={MdOutlineMail}
+                    />
+                    <Input 
+                        label="Username"
+                        type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        name="username"
+                        value={values.username}
+                        id="username"
+                        placeholder="USERNAME"
+                        touched={touched.username}
+                        error={errors.username}
+                        autoComplete="username"
+                        icon={MdOutlinePersonOutline}
+                    />
+                    <Input 
+                        label="Password"
+                        type="password"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        name="password"
+                        value={values.password}
+                        id="password"
+                        placeholder="PASSWORD"
+                        touched={touched.password}
+                        error={errors.password}
+                        autoComplete="current-password"
+                        icon={RiLockPasswordFill}
+                    />
+                    <Input 
+                        label="Confirm Password"
+                        type="password"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        name="confirmPassword"
+                        value={values.confirmPassword}
+                        id="confirmPassword"
+                        placeholder="CONFIRM PASSWORD"
+                        touched={touched.confirmPassword}
+                        error={errors.confirmPassword}
+                        autoComplete="current-password"
+                        icon={RiLockPasswordFill}
+                    />
                     <Button type="button" className="mt-4" onClick={resetForm}>Reset</Button>
                     <Button type="submit" className="text-blue-800 mt-4" disabled={!isValid || !dirty}>Sign Up</Button>
                 </form>
