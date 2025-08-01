@@ -2,7 +2,7 @@ import React from "react";
 import { useField } from "formik";
 
 function FormikHOC(IncomingComponent) {
-    return function ({id,label,name,icon: Icon,...rest}) {
+    return function ({id,label,name,icon,...rest}) {
         const field = useField(name);
         const [data, meta] = field;
         const { value, onBlur, onChange } = data;
@@ -16,7 +16,7 @@ function FormikHOC(IncomingComponent) {
             <>
                 <div className={'mt-5 w-72 flex items-center border-2 rounded-sm p-2 ' + borderClass}>
                     <label htmlFor={id} className='sr-only'>{label}</label>
-                    {Icon && <Icon className="text-white text-lg mr-2" />}
+                    {icon && <span className="text-white text-lg mr-2">{icon}</span>}
                     <IncomingComponent
                         value={value}
                         onBlur={onBlur}

@@ -1,7 +1,7 @@
 import React from "react";
 import FormikHOC from "./FormikHOC";
 
-function Input({ label,
+export function Input({ label,
     id,
     name,
     className,
@@ -21,5 +21,4 @@ function Input({ label,
     );
 }
 const FormikInput = FormikHOC(Input);
-export {Input};
-export default FormikInput;
+export default FormikInput; 
