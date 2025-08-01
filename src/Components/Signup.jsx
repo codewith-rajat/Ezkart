@@ -6,7 +6,7 @@ import Button from "./Button";
 import { Link } from "react-router-dom";
 import { MdOutlineDriveFileRenameOutline, MdOutlineMail, MdOutlinePersonOutline } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import Input from "./Input";
+import FormikInput from "./Input";
 
 function Signup() {
 
@@ -56,7 +56,7 @@ function Signup() {
                             className="flex flex-col"
                         >
                             <IoCartOutline className='text-white text-7xl self-center' />
-                            <Input
+                            <FormikInput
                                 label="Full Name"
                                 type="text"
                                 required
@@ -66,7 +66,7 @@ function Signup() {
                                 autoComplete="name"
                                 icon={MdOutlineDriveFileRenameOutline}
                             />
-                            <Input
+                            <FormikInput
                                 label="Email"
                                 type="email"
                                 required
@@ -76,7 +76,7 @@ function Signup() {
                                 autoComplete="email"
                                 icon={MdOutlineMail}
                             />
-                            <Input
+                            <FormikInput
                                 label="Username"
                                 type="text"
                                 required
@@ -86,7 +86,7 @@ function Signup() {
                                 autoComplete="username"
                                 icon={MdOutlinePersonOutline}
                             />
-                            <Input
+                            <FormikInput
                                 label="Password"
                                 type="password"
                                 required
@@ -96,7 +96,7 @@ function Signup() {
                                 autoComplete="new-password"
                                 icon={RiLockPasswordFill}
                             />
-                            <Input
+                            <FormikInput
                                 label="Confirm Password"
                                 type="password"
                                 required

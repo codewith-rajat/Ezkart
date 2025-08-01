@@ -5,7 +5,7 @@ import { MdOutlineMail } from "react-icons/md";
 import * as Yup from 'yup'
 import Button from "./Button";
 import { Link } from "react-router-dom";
-import Input from "./Input";
+import FormikInput from "./Input";
 
 function ForgotPassword() {
     function callForgotPassword(values) {
@@ -34,7 +34,7 @@ function ForgotPassword() {
                         <Form
                             className="flex flex-col">
                             <IoCartOutline className='text-white text-7xl self-center' />
-                                <Input
+                                <FormikInput
                                     label="Email"
                                     type="email"
                                     required

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 function Button({children,type,onClick,disabled,className}){
     return (
@@ -9,4 +9,4 @@ function Button({children,type,onClick,disabled,className}){
       className={"bg-white text-center mt-4 p-2 shadow-md font-medium rounded-md " + className} >{children}</button> 
     );
 } 
-export default Button;
+export default memo(Button);

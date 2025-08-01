@@ -6,7 +6,7 @@ import { MdOutlinePersonOutline } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { IoCartOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
-import Input from './Input';
+import FormikInput from './Input';
 
 function Login() {
 
@@ -35,7 +35,7 @@ function Login() {
             <Form
               className='flex flex-col'>
               <IoCartOutline className='text-white text-7xl self-center' />
-              <Input
+              <FormikInput
                 label="Username"
                 id="username"
                 name="username"
@@ -46,7 +46,7 @@ function Login() {
                 icon={MdOutlinePersonOutline}
               />
 
-              <Input
+              <FormikInput
                 label="Password"
                 id="password"
                 name='password'

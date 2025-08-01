@@ -3,11 +3,12 @@ import ItemsList from './ItemsList';
 import NoMatching from './NoMatchingItems';
 import { getProductList } from './api';
 import Loading from './Loading';
+import {Input} from './Input';
 
 function ItemListPage() {
     const [query, setQuery] = useState('');
     const [sort, setSort] = useState('default');
-    
+
     const [productList, setProductList] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(function () {
@@ -17,7 +18,7 @@ function ItemListPage() {
             setLoading(false);
         });
     }, []);
-    
+
     const filteredData = useMemo(function () {
         let data = productList.filter(function (item) {
             const lowerCaseTitle = item.title.toLowerCase();
@@ -40,7 +41,7 @@ function ItemListPage() {
         }
         return data;
     }, [productList, query, sort]);
-    
+
     function handleQueryChange(event) {
         const newQuery = event.target.value;
         setQuery(newQuery);
@@ -56,14 +57,18 @@ function ItemListPage() {
     return (
         <>
             <div className="bg-white mt-12 max-w-6xl mx-auto flex items-center justify-end px-9 py-12">
-                <input
+                <div className='flex items-center border-2 border-gray-500 rounded-md p-1 mr-2'>
+                <Input
+                    id="search"
+                    label="Search"
                     type="text"
+                    name="search"
                     value={query}
-                    placeholder='search'
-                    className='border-2 border-gray-500 rounded-md p-1 mr-8'
+                    placeholder='Search'
                     onChange={handleQueryChange} />
-                <label for="sort" className=" text-black font-semibold"></label>
-                <select onChange={handleSortChange} name="sort" id="category" className='mr-28 border-2 p-1 rounded-md' value={sort} >
+                    </div>
+                <label htmlFor="sort" className=" text-black font-semibold"></label>
+                <select onChange={handleSortChange} name="sort" id="category" className='mr-12 border-2 p-1 rounded-md' value={sort} >
                     <option value="default">Default sort</option>
                     <option value="name">Sort by name</option>
                     <option value="pricelh">Sort by price: Low to High</option>
