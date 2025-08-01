@@ -1,16 +1,19 @@
-import React from "react";
-import { MdOutlinePersonOutline } from "react-icons/md";
+import { useField } from "formik";
+import React from "react";                              
 
 function Input({ label,
-    id,
-    value,
-    touched,
-    error,
+    id, 
+    name,
     icon: Icon,
     ...rest
 }) 
 {
-    let borderClass="border-whitex"
+    const field = useField(name);
+    const [data,meta]=field;
+    const {value,onBlur,onChange}=data;
+    const {error,touched} = meta;
+    console.log(name,field)
+    let borderClass="border-white"
     if(error && touched){
         borderClass="border-red-400"
     }
@@ -21,6 +24,10 @@ function Input({ label,
                 {Icon && <Icon className="text-white text-lg mr-2" />}
                 <input
                     id={id}
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    name={name}
                     className='w-full focus:outline-none text-white'
                     {...rest}
                 />
