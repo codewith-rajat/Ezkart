@@ -1,27 +1,35 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import CartList from "./CartList";
+import Loading from "./Loading";
+import { getProductData } from './api.js'
 
 function CartPage({ cartData, updateCart }) {
-    const [localCart, setLocalCart] = useState(cartData);
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(function () {
-        setLocalCart(cartData);
-    }, [cartData]);
+        setLoading(true);
+        const ids = Object.keys(cartData);
+        const promises = ids.map(function (id) {
+            return getProductData(id);
+        });
 
-    function updateMyCart() {
-        updateCart(localCart);
+        Promise.all(promises).then(function (products) {
+            setItems(products)
+            setLoading(false);
+        });
+    }, [cartData]);
+ 
+    if (loading) {
+        return <Loading />
     }
 
     return (
-        <div className="flex flex-col bg-white mx-40 mt-20">
-            <div className="pt-20 px-20">
-                <CartList
-                    cartData={cartData}
-                    localCart={localCart}
-                    setLocalCart={setLocalCart}
-                    updateCart={updateCart} />
-            </div>
-            <button className="text-white bg-red-500 px-4 py-2 rounded-lg my-4 self-end mx-20 font-medium" onClick={updateMyCart}>Update Cart</button>
+        <div className="mt-20 px-24 py-20 bg-white max-w-6xl mx-auto">
+            <CartList
+                cartData={cartData}
+                products={items} 
+                updateCart={updateCart}/>
         </div>
     );
 }

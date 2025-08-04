@@ -3,9 +3,11 @@ import ItemsList from './ItemsList';
 import NoMatching from './NoMatchingItems';
 import { getProductList } from './api';
 import Loading from './Loading';
-import {Input} from './Input';
+import { Input } from './Input';
+import { Navigate } from 'react-router-dom';
+import withUser from './withUser';
 
-function ItemListPage() {
+function ItemListPage({user}) {
     const [query, setQuery] = useState('');
     const [sort, setSort] = useState('default');
 
@@ -56,24 +58,27 @@ function ItemListPage() {
 
     return (
         <>
-            <div className="bg-white mt-12 max-w-6xl mx-auto flex items-center justify-end px-9 py-12">
-                <div className='flex items-center border-2 border-gray-500 rounded-md p-1 mr-2'>
-                <Input
-                    id="search"
-                    label="Search"
-                    type="text"
-                    name="search"
-                    value={query}
-                    placeholder='Search'
-                    onChange={handleQueryChange} />
+            <div className="bg-white mt-12 max-w-6xl mx-auto flex items-center justify-between px-9 py-12">
+                <span className='mx-2 text-red-500 text-2xl font-medium'>Welcome, {user.full_name}</span>
+                <div className='flex '>
+                    <div className='flex items-center border-2 border-gray-500 rounded-md p-1 mr-2'>
+                        <Input
+                            id="search"
+                            label="Search"
+                            type="text"
+                            name="search"
+                            value={query}
+                            placeholder='Search'
+                            onChange={handleQueryChange} />
                     </div>
-                <label htmlFor="sort" className=" text-black font-semibold"></label>
-                <select onChange={handleSortChange} name="sort" id="category" className='mr-12 border-2 p-1 rounded-md' value={sort} >
-                    <option value="default">Default sort</option>
-                    <option value="name">Sort by name</option>
-                    <option value="pricelh">Sort by price: Low to High</option>
-                    <option value="pricehl">Sort by price: High to Low</option>
-                </select>
+                    <label htmlFor="sort" className=" text-black font-semibold"></label>
+                    <select onChange={handleSortChange} name="sort" id="category" className='mr-12 border-2 p-1 rounded-md' value={sort} >
+                        <option value="default">Default sort</option>
+                        <option value="name">Sort by name</option>
+                        <option value="pricelh">Sort by price: Low to High</option>
+                        <option value="pricehl">Sort by price: High to Low</option>
+                    </select>
+                </div>
             </div>
             <div className="bg-white max-w-6xl mx-auto">
                 {filteredData.length > 0 && <ItemsList products={filteredData} />}
@@ -81,12 +86,12 @@ function ItemListPage() {
             </div>
             <div className="flex mx-auto py-16 bg-white  gap-2 max-w-6xl mb-20">
                 <div className='gap-2 flex' >
-                    <button className="ml-10 border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">1</button>
-                    <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">2</button>
-                    <button className="border-red-500 border-4 bg-red-500 text-white px-6 py-2 rounded">3</button>
+                    <button className="hover:bg-red-500 hover:border-red-500 ml-10 border-red-400 border-4 bg-red-400 text-white px-6 py-2 rounded">1</button>
+                    <button className="hover:bg-red-500 hover:border-red-500 border-red-400 border-4 bg-red-400 text-white px-6 py-2 rounded">2</button>
+                    <button className="hover:bg-red-500 hover:border-red-500 border-red-400 border-4 bg-red-400 text-white px-6 py-2 rounded">3</button>
                 </div>
             </div>
         </>
     );
 }
-export default ItemListPage;
+export default withUser(ItemListPage);

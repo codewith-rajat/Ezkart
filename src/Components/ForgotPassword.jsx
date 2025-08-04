@@ -6,9 +6,16 @@ import * as Yup from 'yup'
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import Input from "./Input";
+import axios from "axios";
 
 function callForgotPassword(values) {
-    console.log(values.email);
+    axios.post("https://myeasykart.codeyogi.io/password-forgot",{
+        email:values.email
+    }).then((response)=>{
+        console.log(response.data)
+    }).catch(()=>{
+        console.log("not sent")
+    })
 }
 
 const schema = Yup.object().shape({
@@ -45,7 +52,7 @@ function ForgotPassword({handleSubmit,handleChange,handleBlur,touched,errors,val
                         placeholder="ENTER EMAIL"
                         icon={<MdOutlineMail/>}
                     />
-                    <Button type="submit" className="text-blue-800">Request password reset</Button>
+                    <Button type="submit" className="text-blue-800 bg-white">Request password reset</Button>
                 </form>
                 <Link to="/login" className="mt-2 text-white">Back to Login</Link>
             </div>

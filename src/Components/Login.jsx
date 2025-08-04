@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from './Button';
 import * as Yup from 'yup';
 import { MdOutlinePersonOutline } from 'react-icons/md';
@@ -7,23 +7,36 @@ import { IoCartOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { withFormik } from 'formik';
 import Input from './Input';
+import axios from 'axios';
+import withUser from './withUser';
 
-function callLoginApi(values) {
-  console.log(values.username, values.password);
+function callLoginApi(values,bag) {
+  
+  axios.post("https://myeasykart.codeyogi.io/login",{
+    email:values.email,
+    password:values.password
+  }).then((response)=>{
+    const {user,token} = response.data;
+    localStorage.setItem("token",token);
+    bag.props.setUser(user);
+    bag.props.navigate("/");
+  }).catch(()=>{
+    console.log("Invalid Credentials");
+  })
 }
 
 const schema = Yup.object().shape({
-  username: Yup.string().matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers and underscore are allowed").required("username is a required field"),
+  email: Yup.string().required("Email is a required field").email("Invalid email format"),
   password: Yup.string().min(8).required("password is a required field"),
 });
 
 const initialValues = {
-  username: "",
+  email: "",
   password: "",
 }
 
-function Login({ handleSubmit, values, errors, touched, handleChange, handleBlur }) {
-  console.log("data", values, errors);
+function Login({ handleSubmit, values, errors, touched, handleChange, handleBlur}) {
+  
   return (
     <>
       <div className='flex flex-col items-center justify-center h-full bg-blue-800'>
@@ -32,18 +45,18 @@ function Login({ handleSubmit, values, errors, touched, handleChange, handleBlur
           className='flex flex-col'>
           <IoCartOutline className='text-white text-7xl self-center' />
           <Input
-            value={values.username}
-            error={errors.username}
-            touched={touched.username}
+            value={values.email}
+            error={errors.email}
+            touched={touched.email}
             onChange={handleChange}
             onBlur={handleBlur}
-            label="Username"
-            id="username"
-            name="username"
-            type="text"
+            label="email"
+            id="email"
+            name="email"
+            type="email"
             required
-            autoComplete="username"
-            placeholder="USERNAME"
+            autoComplete="email"
+            placeholder="EMAIL"
             icon={<MdOutlinePersonOutline/>}
           />
 
@@ -61,7 +74,7 @@ function Login({ handleSubmit, values, errors, touched, handleChange, handleBlur
             placeholder='PASSWORD'
             autoComplete="current-password"
             icon={<RiLockPasswordFill/>} />
-          <Button type="submit" className="text-blue-800 mt-4">Login</Button>
+          <Button type="submit" className="text-blue-800 bg-white mt-4">Login</Button>
         </form>
         <h1 className='mt-2 text-white'>Don't have an account?
           <Link to="/signup" > Sign Up</Link>
@@ -73,4 +86,4 @@ function Login({ handleSubmit, values, errors, touched, handleChange, handleBlur
 }
 const myHOC = withFormik({ initialValues: initialValues, validationSchema: schema, handleSubmit: callLoginApi });
 const EasyLogin = myHOC(Login);
-export default EasyLogin;
+export default withUser(EasyLogin);

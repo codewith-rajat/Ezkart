@@ -2,8 +2,13 @@ import React, { memo } from 'react'
 import { MdOutlineShoppingBag } from 'react-icons/md'
 import { Link } from 'react-router-dom';
 import Button from './Button';
+import withUser from './withUser';
 
-function Navbar({ cartCount }) {
+function Navbar({ cartCount,user,setUser }) {
+  function handleUSerLogin(){
+    localStorage.removeItem("token");
+    setUser(undefined);
+  }
   return (
     <div className='bg-white' >
       <nav className="mx-auto py-2 max-w-6xl flex justify-between">
@@ -15,15 +20,15 @@ function Navbar({ cartCount }) {
               <Link to={"/cart"}>{cartCount}</Link>
             </div>
           </div>
-          <Button className="px-2 py-1 text-red-500 bg-white border-3 border-red-500 mr-2">
-            <Link to="/login">Login</Link>
-          </Button>
-          <Button className="px-2 py-1 text-red-500 bg-white border-3 border-red-500">
+          {user && <Button className="px-2 py-1 text-red-500 bg-white border-3 border-red-400 mr-2" onClick={handleUSerLogin}>
+            <Link to="/login">Logout</Link>
+          </Button>}
+          {!user && <Button className="px-2 py-1 text-red-500 bg-white border-3 border-red-400">
             <Link to="/signup">Sign up</Link>
-          </Button>
+          </Button>}
         </div>
       </nav>
     </div>
   )
 }
-export default memo(Navbar);
+export default memo(withUser(Navbar));

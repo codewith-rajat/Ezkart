@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 
 export default function NotFound() {
     return (
@@ -10,9 +11,9 @@ export default function NotFound() {
                 alt="not found"
             />
             <h1 className='text-red-500 font-medium text-3xl'>Page not found !!</h1>
-            <button className='text-white bg-red-500 py-2 px-4 rounded-lg mt-2'>
+            <Button className='text-white bg-red-400 py-2 px-4 rounded-lg mt-2'>
                 <Link to={"/"}>Go to Home</Link>
-            </button>
+            </Button>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState,useCallback } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
 import { getProductData } from './api';
 import Loading from './Loading';
@@ -61,8 +62,8 @@ function Details({onAddToCart}) {
                         <p className='mt-4 text-xl font-bold' >${product.price}</p>
                         <p className='mt-4 mr-8' >{product.description}</p>
                         <div className='mt-6' >
-                            <input type="number" value={count} onChange={handleCountChange} className='border-2 border-gray-200 w-12 p-1' />
-                            <button onClick={handleButtonClick} className='ml-2 bg-red-500 text-white px-12 py-2 rounded-lg' >Add to Cart</button>
+                            <input type="number" value={count} onChange={handleCountChange} min={1} className='border-2 border-gray-200 w-12 p-1' />
+                            <Button onClick={handleButtonClick} className='ml-2 bg-red-400 text-white px-12 py-2 rounded-lg hover:bg-red-500' >Add to Cart</Button>
                         </div>
                     </div>
                 </div>

@@ -7,9 +7,20 @@ import { Link } from "react-router-dom";
 import { MdOutlineDriveFileRenameOutline, MdOutlineMail, MdOutlinePersonOutline } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Input from "./Input";
+import axios from "axios";
 
 function callSignupApi(values) {
-    console.log(values.fullname, values.username, values.email, values.password, values.confirmPassword);
+    axios.post("https://myeasykart.codeyogi.io/signup",{
+        username:values.username,
+        email:values.email,
+        password:values.password,
+        confirmPassword:values.confirmPassword,
+        fullName:values.fullname
+    }).then((response)=>{
+        console.log(response.data)
+    }).catch(()=>{
+        console.log("error")
+    });
 }
 
 const schema = Yup.object().shape({
@@ -125,7 +136,7 @@ function Signup({ handleSubmit, handleChange, handleBlur, touched, errors, value
                         autoComplete="new-password"
                         icon={<RiLockPasswordFill/>}
                     />
-                    <Button type="submit" className="text-blue-800 mt-4" >Sign Up</Button>
+                    <Button type="submit" className="text-blue-800 mt-4 bg-white" >Sign Up</Button>
                 </form>
                 <h1 className='mt-2 text-white'>Already have an account?
                     <Link to="/login" > Login</Link>
