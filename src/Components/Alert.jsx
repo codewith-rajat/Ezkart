@@ -1,42 +1,42 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { withAlert } from './withProvider';
 
-function Alert({message,type}){
-    let color;
-    let icon;
-    if(type==='success'){
-      color="bg-green-400";
-    }else if(type==='error'){
-      color='bg-red-400';
+const themeMap = {
+  success: {
+    color: "bg-green-500"
+  },
+  error: {
+    color: "bg-red-500"
+  }
+}
+function Alert({ alert, removeAlert }) {
+
+  useEffect(function () {
+    if (alert) {
+      const timer = setTimeout(removeAlert, 3 * 1000);
+      return function () {
+        clearTimeout(timer);
+      };
     }
+  }, [alert]);
+
+  if (!alert) {
+    return;
+  }
+  const { message, type } = alert;
+  const theme = themeMap[type];
+
+  if (!theme) {
+    return;
+  }
+
   return <>
-  <div className="py-10 bg-white dark:bg-dark">
-      <div className="container">
-        <div className={"rounded-md bg-[#C4F9E2] p-4"+color}>
-          <p className="flex items-center text-sm font-medium text-[#004434]">
-            <span className="pr-3">
-              <svg
-                width={20}
-                height={20}
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx={10} cy={10} r={10} fill="#00B078" />
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M14.1203 6.78954C14.3865 7.05581 14.3865 7.48751 14.1203 7.75378L9.12026 12.7538C8.85399 13.02 8.42229 13.02 8.15602 12.7538L5.88329 10.4811C5.61703 10.2148 5.61703 9.78308 5.88329 9.51682C6.14956 9.25055 6.58126 9.25055 6.84753 9.51682L8.63814 11.3074L13.156 6.78954C13.4223 6.52328 13.854 6.52328 14.1203 6.78954Z"
-                  fill="white"
-                />
-              </svg>
-            </span>
-            {type} 
-            {message}
-          </p>
-        </div>
-      </div>
+
+    <div className={"p-4 mb-4 text-sm text-blue-800 rounded-lg dark:text-blue-400 " + theme.color} role="alert">
+      <span className="font-medium">{type}</span> {message}
     </div>
-    </>
+
+  </>
 }
 
-export default Alert
+export default withAlert(Alert);

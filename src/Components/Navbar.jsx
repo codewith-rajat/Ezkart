@@ -2,11 +2,12 @@ import React, { memo } from 'react'
 import { MdOutlineShoppingBag } from 'react-icons/md'
 import { Link } from 'react-router-dom';
 import Button from './Button';
-import withUser from './withUser';
+import { withUser } from './withProvider';
 
 function Navbar({ cartCount,user,setUser }) {
   function handleUSerLogin(){
     localStorage.removeItem("token");
+    localStorage.removeItem("cart");
     setUser(undefined);
   }
   return (

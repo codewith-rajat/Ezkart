@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { withFormik } from 'formik';
 import Input from './Input';
 import axios from 'axios';
-import withUser from './withUser';
+import {withUser} from './withProvider';
 
 function callLoginApi(values,bag) {
   
@@ -20,8 +20,9 @@ function callLoginApi(values,bag) {
     localStorage.setItem("token",token);
     bag.props.setUser(user);
     bag.props.navigate("/");
+    // bag.props.setAlert({type:"success",message:"Logged in"});
   }).catch(()=>{
-    console.log("Invalid Credentials");
+    bag.props.setAlert({type:"error",message:"Invalid Credentials"});
   })
 }
 

@@ -5,7 +5,7 @@ import { getProductList } from './api';
 import Loading from './Loading';
 import { Input } from './Input';
 import { Navigate } from 'react-router-dom';
-import withUser from './withUser';
+import { withUser } from './withProvider';
 
 function ItemListPage({user}) {
     const [query, setQuery] = useState('');

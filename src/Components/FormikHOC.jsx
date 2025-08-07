@@ -7,14 +7,14 @@ function FormikHOC(IncomingComponent) {
         const [data, meta] = field;
         const { value, onBlur, onChange } = data;
         const { error, touched } = meta;
-        console.log(name, field)
-        let borderClass = "border-white"
+        // console.log(name, field)
+        let borderclassName = "border-white"
         if (error && touched) {
-            borderClass = "border-red-400"
+            borderclassName = "border-red-400"
         }
         return (
             <>
-                <div className={'mt-5 w-72 flex items-center border-2 rounded-sm p-2 ' + borderClass}>
+                <div className={'mt-5 w-72 flex items-center border-2 rounded-sm p-2 ' + borderclassName}>
                     <label htmlFor={id} className='sr-only'>{label}</label>
                     {icon && <span className="text-white text-lg mr-2">{icon}</span>}
                     <IncomingComponent
