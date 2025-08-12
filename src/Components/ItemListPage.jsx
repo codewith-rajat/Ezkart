@@ -1,55 +1,47 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import ItemsList from './ItemsList';
 import NoMatching from './NoMatchingItems';
 import { getProductList } from './api';
 import Loading from './Loading';
 import { Input } from './Input';
-import { Navigate } from 'react-router-dom';
 import { withUser } from './withProvider';
+import { range } from 'lodash';
+import { Link, useSearchParams } from 'react-router-dom';
 
-function ItemListPage({user}) {
-    const [query, setQuery] = useState('');
-    const [sort, setSort] = useState('default');
-
-    const [productList, setProductList] = useState([]);
+function ItemListPage({ user }) {
+    const [productData, setProductData] = useState();
     const [loading, setLoading] = useState(true);
+    const [searchParams,setSearchParams] = useSearchParams();
+
+    const params = Object.fromEntries([...searchParams]);
+    let { query, sort, pageNumber } = params;
+
+    query = query || '';
+    sort = sort || 'default';
+    pageNumber = +pageNumber || 1;
+
     useEffect(function () {
-        const token = getProductList();
-        token.then(function (products) {
-            setProductList(products);
+        let sortBy;
+        let sortType;
+        if (sort == 'title') {
+            sortBy = 'title';
+        } else if (sort == 'pricelh') {
+            sortBy = 'price';
+        } else if (sort == 'pricehl') {
+            sortBy = 'price';
+            sortType = 'desc';
+        }
+        getProductList({ sortBy, query, pageNumber, sortType }).then(function (response) {
+            setProductData(response);
             setLoading(false);
         });
-    }, []);
-
-    const filteredData = useMemo(function () {
-        let data = productList.filter(function (item) {
-            const lowerCaseTitle = item.title.toLowerCase();
-            const lowerCaseQuery = query.toLowerCase();
-            return lowerCaseTitle.indexOf(lowerCaseQuery) != -1;
-        });
-        if (sort == 'name') {
-            data = [...data].sort(function (x, y) {
-                return (x.title < y.title ? -1 : 1);
-            });
-        } else if (sort == "pricelh") {
-            data = [...data].sort(function (x, y) {
-                return x.price - y.price;
-            });
-        }
-        else if (sort == "pricehl") {
-            data = [...data].sort(function (x, y) {
-                return y.price - x.price;
-            });
-        }
-        return data;
-    }, [productList, query, sort]);
+    }, [sort, query, pageNumber]);
 
     function handleQueryChange(event) {
-        const newQuery = event.target.value;
-        setQuery(newQuery);
+        setSearchParams({...params,query:event.target.value,pageNumber:1});
     };
     function handleSortChange(event) {
-        setSort(event.target.value);
+        setSearchParams({...params,sort:event.target.value});
     };
 
     if (loading) {
@@ -74,21 +66,28 @@ function ItemListPage({user}) {
                     <label htmlFor="sort" className=" text-black font-semibold"></label>
                     <select onChange={handleSortChange} name="sort" id="category" className='mr-12 border-2 p-1 rounded-md' value={sort} >
                         <option value="default">Default sort</option>
-                        <option value="name">Sort by name</option>
+                        <option value="title">Sort by name</option>
                         <option value="pricelh">Sort by price: Low to High</option>
                         <option value="pricehl">Sort by price: High to Low</option>
                     </select>
                 </div>
             </div>
             <div className="bg-white max-w-6xl mx-auto">
-                {filteredData.length > 0 && <ItemsList products={filteredData} />}
-                {filteredData.length == 0 && <NoMatching>No Matching Results Found</NoMatching>}
+                {productData.data.length > 0 && <ItemsList products={productData.data} />}
+                {productData.data.length == 0 && <NoMatching>No Matching Results Found</NoMatching>}
             </div>
             <div className="flex mx-auto py-16 bg-white  gap-2 max-w-6xl mb-20">
-                <div className='gap-2 flex' >
-                    <button className="hover:bg-red-500 hover:border-red-500 ml-10 border-red-400 border-4 bg-red-400 text-white px-6 py-2 rounded">1</button>
-                    <button className="hover:bg-red-500 hover:border-red-500 border-red-400 border-4 bg-red-400 text-white px-6 py-2 rounded">2</button>
-                    <button className="hover:bg-red-500 hover:border-red-500 border-red-400 border-4 bg-red-400 text-white px-6 py-2 rounded">3</button>
+                <div className='ml-10'>
+                {range(1, productData.meta.last_page + 1).map((pageNo) => (
+                    <Link 
+                        key={pageNo} 
+                        to={"?" + new URLSearchParams({...params,pageNumber:pageNo})} 
+                        className={"hover:bg-red-500 hover:border-red-500 ml-2 border-red-400 border-4 text-white px-6 py-2 rounded " + 
+                            (pageNo === pageNumber ? "bg-red-500 border-red-500" : "bg-red-400")
+                        }>
+                        {pageNo}
+                    </Link> 
+                ))}
                 </div>
             </div>
         </>

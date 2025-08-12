@@ -1,13 +1,14 @@
-import React, { useEffect, useState,useCallback } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState,useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
 import { getProductData } from './api';
 import Loading from './Loading';
 import NotFound from './NotFound';
+import { withCart } from './withProvider';
 
-function Details({onAddToCart}) {
+function Details({addToCart}) {
     const params = useParams();
     const id = +(params.id);
     const [product, setProduct] = useState();
@@ -30,10 +31,10 @@ function Details({onAddToCart}) {
     const navigate = useNavigate();
     const handleButtonClick=useCallback(function (){
         setCount(1);
-        onAddToCart(id,count);
-        navigate(`/details/${id+1}`);
+        addToCart(id,count);
+        navigate(`/products/${id+1}`);
         setLoading(true);
-    },[id,count,navigate,onAddToCart]);
+    },[id,count,navigate,addToCart]);
 
     const handleCartCount = useCallback(function (){
         setLoading(true);
@@ -52,7 +53,7 @@ function Details({onAddToCart}) {
         <>
             <Link className='text-red-500 text-4xl' to={'/'} ><IoMdArrowRoundBack /></Link>
             <div className='flex justify-center items-center bg-stone-100'>
-                {id > 1 && <Link className='text-red-500' onClick={handleCartCount} to={"/details/" + (id - 1)}><IoMdArrowRoundBack />Prev</Link>}
+                {id > 1 && <Link className='text-red-500' onClick={handleCartCount} to={"/products/" + (id - 1)}><IoMdArrowRoundBack />Prev</Link>}
                 <div className='flex bg-white w-3/4 h-3/4'>
                     <div className='p-8 w-1/2'>
                         <img className="object-contain h-full w-full max-h-[400px] shadow-lg" src={product.thumbnail} alt={product.title} />
@@ -67,10 +68,10 @@ function Details({onAddToCart}) {
                         </div>
                     </div>
                 </div>
-                <Link className='text-red-500' onClick={handleCartCount} to={"/details/" + (id + 1)}><IoMdArrowRoundForward />Next</Link>
+                <Link className='text-red-500' onClick={handleCartCount} to={"/products/" + (id + 1)}><IoMdArrowRoundForward />Next</Link>
             </div>
         </>
     );
 }
 
-export default Details;
+export default withCart(Details);

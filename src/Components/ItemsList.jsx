@@ -1,4 +1,4 @@
-import React,{memo} from 'react';
+import {memo} from 'react';
 import Items from './Items';
 function ItemsList({ products }) {
     return (

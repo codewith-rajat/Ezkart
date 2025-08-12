@@ -1,4 +1,3 @@
-import React, { useContext, useState } from 'react';
 import Button from './Button';
 import * as Yup from 'yup';
 import { MdOutlinePersonOutline } from 'react-icons/md';
@@ -8,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { withFormik } from 'formik';
 import Input from './Input';
 import axios from 'axios';
-import {withUser} from './withProvider';
+import {withAlert, withUser} from './withProvider';
 
 function callLoginApi(values,bag) {
   
@@ -87,4 +86,4 @@ function Login({ handleSubmit, values, errors, touched, handleChange, handleBlur
 }
 const myHOC = withFormik({ initialValues: initialValues, validationSchema: schema, handleSubmit: callLoginApi });
 const EasyLogin = myHOC(Login);
-export default withUser(EasyLogin);
+export default withAlert(withUser(EasyLogin));

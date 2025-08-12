@@ -1,4 +1,3 @@
-import React from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { withFormik } from "formik";
 import * as Yup from 'yup';

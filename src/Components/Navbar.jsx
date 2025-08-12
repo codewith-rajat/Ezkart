@@ -1,8 +1,8 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import { MdOutlineShoppingBag } from 'react-icons/md'
 import { Link } from 'react-router-dom';
 import Button from './Button';
-import { withUser } from './withProvider';
+import { withCart, withUser } from './withProvider';
 
 function Navbar({ cartCount,user,setUser }) {
   function handleUSerLogin(){
@@ -32,4 +32,4 @@ function Navbar({ cartCount,user,setUser }) {
     </div>
   )
 }
-export default memo(withUser(Navbar));
+export default withCart(memo(withUser(Navbar)));

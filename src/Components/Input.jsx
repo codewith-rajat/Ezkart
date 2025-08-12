@@ -1,4 +1,3 @@
-import React from "react";
 import FormikHOC from "./FormikHOC";
 
 export function Input({ label,
