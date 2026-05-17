@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Loading from '../Loading';
 import axios from 'axios';
 import { UserContext } from '../Contexts';
+import API_BASE_URL from '../../config.js'
 
 function UserProvider({children}){
     const [user, setUser] = useState();
@@ -11,9 +12,9 @@ function UserProvider({children}){
 
       useEffect(() => {
         if (token) {
-          axios.get("https://myeasykart.codeyogi.io/me", {
+          axios.get(`${API_BASE_URL}/auth/me`, {
             headers: {
-              Authorization: token,
+              Authorization: `Bearer ${token}`,
             },
           }).then((response) => {
             setUser(response.data);

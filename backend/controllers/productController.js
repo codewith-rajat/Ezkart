@@ -47,9 +47,9 @@ export const getSingleProduct =
     try {
 
       const product =
-        await Product.findById(
-          req.params.id
-        );
+        await Product.findOne({
+          id: req.params.id
+        });
 
       if (!product) {
         return res
@@ -79,11 +79,11 @@ export const getProductsByIds =
     try {
 
       const ids =
-        req.query.ids.split(",");
+        req.query.ids.split(",").map(id => parseInt(id));
 
       const products =
         await Product.find({
-          _id: { $in: ids },
+          id: { $in: ids },
         });
 
       res.json(products);

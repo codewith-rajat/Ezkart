@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 import Input from "./Input";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+
 function callForgotPassword(values) {
-    axios.post("https://myeasykart.codeyogi.io/password-forgot",{
+    axios.post(`${API_BASE_URL}/auth/password-forgot`,{
         email:values.email
     }).then((response)=>{
         console.log(response.data)
@@ -30,7 +32,6 @@ const initialValues = {
 function ForgotPassword({handleSubmit,handleChange,handleBlur,touched,errors,values}) {
 
     return (
-        <>
             <div className="bg-blue-800 h-full flex flex-col items-center justify-center">
                 <form
                     onSubmit={handleSubmit}
@@ -55,7 +56,6 @@ function ForgotPassword({handleSubmit,handleChange,handleBlur,touched,errors,val
                 </form>
                 <Link to="/login" className="mt-2 text-white">Back to Login</Link>
             </div>
-        </>
     );
 }
 const myHOC = withFormik({initialValues:initialValues,validationSchema:schema,handleSubmit:callForgotPassword});

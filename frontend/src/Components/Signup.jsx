@@ -2,23 +2,34 @@ import { IoCartOutline } from "react-icons/io5";
 import { withFormik } from "formik";
 import * as Yup from 'yup';
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineDriveFileRenameOutline, MdOutlineMail, MdOutlinePersonOutline } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Input from "./Input";
 import axios from "axios";
+import { withAlert, withUser } from './withProvider';
+import API_BASE_URL from '../config.js'
 
-function callSignupApi(values) {
-    axios.post("https://myeasykart.codeyogi.io/signup",{
+function callSignupApi(values, bag) {
+    axios.post(`${API_BASE_URL}/auth/signup`,{
         username:values.username,
         email:values.email,
         password:values.password,
         confirmPassword:values.confirmPassword,
         fullName:values.fullname
     }).then((response)=>{
-        console.log(response.data)
-    }).catch(()=>{
-        console.log("error")
+        const {token, _id, fullName, username, email} = response.data;
+        localStorage.setItem("token",token);
+        if (bag.props?.setUser) {
+            bag.props.setUser({_id, fullName, username, email});
+        }
+        if (bag.props?.navigate) {
+            bag.props.navigate("/");
+        }
+    }).catch((error)=>{
+        if (bag.props?.setAlert) {
+            bag.props.setAlert({type:"error",message: error.response?.data?.message || "Signup failed"});
+        }
     });
 }
 
@@ -146,5 +157,12 @@ function Signup({ handleSubmit, handleChange, handleBlur, touched, errors, value
 }
 
 const myHOC = withFormik({ validationSchema: schema, initialValues: initialValues, handleSubmit: callSignupApi })
-const EasySignup = myHOC(Signup)
+const FormikSignup = myHOC(Signup)
+
+function SignupWithRouter(props) {
+  const navigate = useNavigate();
+  return <FormikSignup {...props} navigate={navigate} />;
+}
+
+const EasySignup = withAlert(withUser(SignupWithRouter))
 export default EasySignup;

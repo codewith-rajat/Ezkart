@@ -3,25 +3,31 @@ import * as Yup from 'yup';
 import { MdOutlinePersonOutline } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { IoCartOutline } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { withFormik } from 'formik';
 import Input from './Input';
 import axios from 'axios';
 import {withAlert, withUser} from './withProvider';
+import API_BASE_URL from '../config.js'
 
-function callLoginApi(values,bag) {
+function callLoginApi(values, { setSubmitting, props }) {
   
-  axios.post("https://myeasykart.codeyogi.io/login",{
+  axios.post(`${API_BASE_URL}/auth/login`,{
     email:values.email,
     password:values.password
   }).then((response)=>{
-    const {user,token} = response.data;
+    const {token, _id, fullName, username, email} = response.data;
     localStorage.setItem("token",token);
-    bag.props.setUser(user);
-    bag.props.navigate("/");
-    // bag.props.setAlert({type:"success",message:"Logged in"});
-  }).catch(()=>{
-    bag.props.setAlert({type:"error",message:"Invalid Credentials"});
+    props.setUser({_id, fullName, username, email});
+    props.setAlert({type:"success",message:"Login Successful!"});
+    setTimeout(() => {
+      props.navigate("/");
+    }, 1000);
+    setSubmitting(false);
+  }).catch((error)=>{
+    const errorMessage = error.response?.data?.message || "Invalid Credentials";
+    props.setAlert({type:"error",message:errorMessage});
+    setSubmitting(false);
   })
 }
 
@@ -85,5 +91,12 @@ function Login({ handleSubmit, values, errors, touched, handleChange, handleBlur
   )
 }
 const myHOC = withFormik({ initialValues: initialValues, validationSchema: schema, handleSubmit: callLoginApi });
-const EasyLogin = myHOC(Login);
-export default withAlert(withUser(EasyLogin));
+const FormikLogin = myHOC(Login);
+
+function LoginWithRouter(props) {
+  const navigate = useNavigate();
+  return <FormikLogin {...props} navigate={navigate} />;
+}
+
+const EasyLogin = withAlert(withUser(LoginWithRouter));
+export default EasyLogin;

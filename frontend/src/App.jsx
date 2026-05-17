@@ -23,8 +23,8 @@ function App() {
         <AlertProvider>
           <UserProvider>
             <CartProvider>
-              <Alert />
               <Navbar />
+              <Alert />
               <Routes>
                 <Route index element={<UserRoute><ItemListPage /></UserRoute>} />
                 <Route path='/products/:id' element={<Details />} />

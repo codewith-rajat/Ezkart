@@ -7,8 +7,19 @@ function CartProvider({ isLoggedIn, user, children }) {
     const [cart, setCart] = useState([]);
     useEffect(function () {
         if (isLoggedIn) {
-            getCart().then(function (saveCart) {
-                setCart(saveCart);
+            getCart().then(function (cartData) {
+                if (cartData && cartData.items && Array.isArray(cartData.items)) {
+                    const cartItems = cartData.items.map((item) => ({
+                        product: item.product || item, 
+                        quantity: item.quantity || 1,
+                    }));
+                    setCart(cartItems);
+                } else {
+                    setCart([]);
+                }
+            }).catch((err) => {
+                console.error("Error loading cart:", err);
+                setCart([]);
             });
         } else {
             const savedCartString = localStorage.getItem("myCart") || "{}";
@@ -29,7 +40,10 @@ function CartProvider({ isLoggedIn, user, children }) {
 
     const addToCart = useCallback(function (productId, count) {
         const quantityMap = cart.reduce(function (m, cartItem) {
-            return { ...m, [cartItem.product.id]: cartItem.quantity }
+            if (cartItem && cartItem.product && cartItem.product.id) {
+                return { ...m, [cartItem.product.id]: cartItem.quantity }
+            }
+            return m;
         }, {});
         const oldCount = quantityMap[productId] || 0;
         const newCart = { ...quantityMap, [productId]: oldCount + count };
@@ -38,7 +52,6 @@ function CartProvider({ isLoggedIn, user, children }) {
     function updateCart(quantityMap) {
         if (isLoggedIn) {
             saveCart(quantityMap).then(function (response) {
-                //setCart(response);
                 quantityMapToCart(quantityMap);
             });
         } else {
@@ -50,13 +63,13 @@ function CartProvider({ isLoggedIn, user, children }) {
 
     const cartCount = useMemo(function () {
         return cart.reduce(function (previous, current) {
-            return previous + current.quantity;
+            return previous + (current?.quantity || 0);
         }, 0);
     }, [cart]);
 
     return <>
         <CartContext.Provider value={{ cart, updateCart, cartCount, addToCart }}>{children}</CartContext.Provider>
-    </>
+        </>
 }
 
 export default withUser(CartProvider);

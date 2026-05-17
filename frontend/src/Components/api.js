@@ -1,13 +1,18 @@
-import axios from "axios";
+import axios from 'axios'
+import API_BASE_URL from '../config.js'
+
 export function getProductData(id){
-    return axios.get("https://myeasykart.codeyogi.io/product/"+id).then(function(response){
+    return axios.get(`${API_BASE_URL}/products/${id}`).then(function(response){
         return response.data;
     });
 }
 
 export function getProductByIds(ids){
+    if (!ids || ids.length === 0) {
+        return Promise.resolve([]);
+    }
     const commaSeparatedIds = ids.join();
-    return axios.get("https://myeasykart.codeyogi.io/products/bulk",{
+    return axios.get(`${API_BASE_URL}/products/bulk`,{
         params:{
             ids:commaSeparatedIds,
         },
@@ -32,7 +37,7 @@ export function getProductList({sortBy,query,pageNumber,sortType}){
         params.sortType=sortType;
     }
 
-    return axios.get("https://myeasykart.codeyogi.io/products",{
+    return axios.get(`${API_BASE_URL}/products`,{
         params,
     }).then(function(response){
         return response.data;
@@ -40,9 +45,9 @@ export function getProductList({sortBy,query,pageNumber,sortType}){
 }
 
 export function saveCart(cart){
-    return axios.post("https://myeasykart.codeyogi.io/carts",{data:cart},{
+    return axios.post(`${API_BASE_URL}/carts`,{data:cart},{
         headers:{
-            Authorization:localStorage.getItem("token"),
+            Authorization:`Bearer ${localStorage.getItem("token")}`,
         }
     }).then(function(response){
         return response.data;
@@ -50,9 +55,9 @@ export function saveCart(cart){
 }
 
 export function getCart(){
-    return axios.get("https://myeasykart.codeyogi.io/carts",{
+    return axios.get(`${API_BASE_URL}/carts`,{
         headers:{
-            Authorization:localStorage.getItem("token"), 
+            Authorization:`Bearer ${localStorage.getItem("token")}`, 
         }
     }).then(function(response){
         return response.data;
