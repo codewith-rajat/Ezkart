@@ -25,8 +25,10 @@ function ItemListPage({ user }) {
         let sortType;
         if (sort == 'title') {
             sortBy = 'title';
+            sortType = 'asc';
         } else if (sort == 'pricelh') {
             sortBy = 'price';
+            sortType = 'asc';
         } else if (sort == 'pricehl') {
             sortBy = 'price';
             sortType = 'desc';

@@ -7,16 +7,33 @@ export const getProducts = async (
   res
 ) => {
   try {
+    console.log(req.params);
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const skip = (page - 1) * limit;
 
     // Fetch all products from database
-    const products = await Product.find()
+    const search = req.query.search || "";
+    const sortBy = req.query.sortBy;
+    const sortType = req.query.sortType == 'desc' ? -1 : 1;
+
+    let filter = {};
+    if(search){
+      filter = {
+        title: {$regex: search, $options: "i"},
+      }
+    }
+    
+    let sort = {};
+    if(sortBy){
+      sort[sortBy] = sortType;
+    }
+    const products = await Product.find(filter)
+      .sort(sort)
       .skip(skip)
       .limit(limit);
 
-    const total = await Product.countDocuments();
+    const total = await Product.countDocuments(filter);
 
     console.log(`Returning ${products.length} products from page ${page}`);
 
