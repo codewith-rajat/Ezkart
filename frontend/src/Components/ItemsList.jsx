@@ -2,7 +2,7 @@ import {memo} from 'react';
 import Items from './Items';
 function ItemsList({ products }) {
     return (
-        <div className='flex flex-wrap justify-center sm:grid grid-cols-3 place-items-center gap-2 space-y-2 md:space-y-0' >
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 place-items-center w-full' >
             {products && products.map(function (item) {
                 return (
                     <Items

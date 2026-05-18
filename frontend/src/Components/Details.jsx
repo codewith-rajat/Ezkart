@@ -54,12 +54,12 @@ function Details({addToCart}) {
             <Link className='text-red-500 text-4xl' to={'/'} ><IoMdArrowRoundBack /></Link>
             <div className='flex justify-center items-center bg-stone-100'>
                 {id > 1 && <Link className='text-red-500' onClick={handleCartCount} to={"/products/" + (id - 1)}><IoMdArrowRoundBack />Prev</Link>}
-                <div className='flex bg-white w-3/4 h-3/4'>
-                    <div className='p-8 w-1/2'>
+                <div className='flex flex-col sm:flex-row bg-white w-3/4 h-3/4'>
+                    <div className='p-8 w-full sm:w-1/2'>
                         <img className="object-contain h-full w-full max-h-[400px] shadow-lg" src={product.thumbnail} alt={product.title} />
                     </div>
-                    <div className='w-1/2 pt-20'>
-                        <h2 className='text-3xl font-medium ' >{product.title}</h2>
+                    <div className='p-4 sm:w-1/2 sm:pt-20'>
+                        <h2 className='text-3xl text-red-500 font-medium ' >{product.title}</h2>
                         <p className='mt-4 text-xl font-bold' >${product.price}</p>
                         <p className='mt-4 mr-8' >{product.description}</p>
                         <div className='mt-6' >

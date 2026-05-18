@@ -56,21 +56,28 @@ function ItemListPage({ user }) {
 
     return (
         <>
-            <div className="bg-white mt-12 max-w-6xl mx-auto flex items-center justify-between px-9 py-12">
-                <span className='mx-2 text-red-500 text-2xl font-medium'>Welcome, {user.fullName}</span>
-                <div className='flex '>
-                    <div className='flex items-center border-2 border-gray-500 rounded-md p-1 mr-2'>
+            {/* Header Section */}
+            <div className="bg-white mt-12 md:mt-16 max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-6 lg:px-9 py-6 md:py-12 gap-4">
+                <span className='text-red-500 text-xl md:text-2xl font-medium text-center md:text-left'>Welcome, {user.fullName}</span>
+                
+                {/* Search and Sort Controls */}
+                <div className='flex flex-col sm:flex-row gap-3 w-full md:w-auto'>
+                    <div className='flex items-center border-2 border-gray-500 rounded-md p-1 flex-1 sm:flex-none'>
                         <Input
                             id="search"
                             label="Search"
                             type="text"
                             name="search"
                             value={query}
-                            placeholder='Search'
+                            placeholder='Search products...'
                             onChange={handleQueryChange} />
                     </div>
-                    <label htmlFor="sort" className=" text-black font-semibold"></label>
-                    <select onChange={handleSortChange} name="sort" id="category" className='mr-12 border-2 p-1 rounded-md' value={sort} >
+                    <select 
+                        onChange={handleSortChange} 
+                        name="sort" 
+                        id="category" 
+                        className='border-2 border-gray-500 p-2 rounded-md flex-1 sm:flex-none' 
+                        value={sort} >
                         <option value="default">Default sort</option>
                         <option value="title">Sort by name</option>
                         <option value="pricelh">Sort by price: Low to High</option>
@@ -78,22 +85,26 @@ function ItemListPage({ user }) {
                     </select>
                 </div>
             </div>
-            <div className="bg-white max-w-6xl mx-auto">
+            
+            {/* Products Grid */}
+            <div className="bg-white max-w-6xl mx-auto px-4 md:px-6 lg:px-9 py-6">
                 {productData.data.length > 0 && <ItemsList products={productData.data} />}
                 {productData.data.length == 0 && <NoMatching>No Matching Results Found</NoMatching>}
             </div>
-            <div className="flex mx-auto py-16 bg-white  gap-2 max-w-6xl mb-20">
-                <div className='ml-10'>
-                {range(1, productData.meta.last_page + 1).map((pageNo) => (
-                    <Link 
-                        key={pageNo} 
-                        to={"?" + new URLSearchParams({...params,pageNumber:pageNo})} 
-                        className={"hover:bg-red-500 hover:border-red-500 ml-2 border-red-400 border-4 text-white px-6 py-2 rounded " + 
-                            (pageNo === pageNumber ? "bg-red-500 border-red-500" : "bg-red-400")
-                        }>
-                        {pageNo}
-                    </Link> 
-                ))}
+            
+            {/* Pagination */}
+            <div className="flex justify-center md:justify-start py-8 md:py-16 bg-white max-w-6xl mx-auto px-4 md:px-6 lg:px-9 mb-20">
+                <div className='flex flex-wrap gap-2 justify-center md:justify-start'>
+                    {range(1, productData.meta.last_page + 1).map((pageNo) => (
+                        <Link 
+                            key={pageNo} 
+                            to={"?" + new URLSearchParams({...params,pageNumber:pageNo})} 
+                            className={"border-2 text-white px-3 md:px-6 py-1 md:py-2 rounded font-semibold transition-colors text-sm md:text-base " + 
+                                (pageNo === pageNumber ? "bg-red-500 border-red-500" : "bg-red-400 border-red-400 hover:bg-red-500 hover:border-red-500")
+                            }>
+                            {pageNo}
+                        </Link> 
+                    ))}
                 </div>
             </div>
         </>
