@@ -10,7 +10,7 @@ function CartProvider({ isLoggedIn, user, children }) {
             getCart().then(function (cartData) {
                 if (cartData && cartData.items && Array.isArray(cartData.items)) {
                     const cartItems = cartData.items.map((item) => ({
-                        product: item.product || item, 
+                        product: item.productDetails || item.product, 
                         quantity: item.quantity || 1,
                     }));
                     setCart(cartItems);
@@ -51,8 +51,15 @@ function CartProvider({ isLoggedIn, user, children }) {
     }, [cart]);
     function updateCart(quantityMap) {
         if (isLoggedIn) {
-            saveCart(quantityMap).then(function (response) {
+            // Convert quantityMap to items array format that backend expects
+            const itemsArray = Object.entries(quantityMap).map(([productId, quantity]) => ({
+                product: Number(productId),
+                quantity: quantity
+            }));
+            saveCart(itemsArray).then(function (response) {
                 quantityMapToCart(quantityMap);
+            }).catch((err) => {
+                console.error("Error saving cart:", err);
             });
         } else {
             const quantityMapString = JSON.stringify(quantityMap);

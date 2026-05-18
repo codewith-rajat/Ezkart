@@ -38,7 +38,7 @@ function Details({addToCart}) {
 
     const handleCartCount = useCallback(function (){
         setLoading(true);
-        setCount(1);
+        setCount(1); 
     },[]);
 
     if(loading){

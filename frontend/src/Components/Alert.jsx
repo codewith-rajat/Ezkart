@@ -3,10 +3,12 @@ import { withAlert } from './withProvider';
 
 const themeMap = {
   success: {
-    color: "bg-green-500"
+    color: "bg-green-500",
+    textColor:"text-white"
   },
   error: {
-    color: "bg-red-500"
+    color: "bg-red-500",
+    textColor:"text-white"
   }
 }
 function Alert({ alert, removeAlert }) {
@@ -32,7 +34,7 @@ function Alert({ alert, removeAlert }) {
 
   return <>
 
-    <div className={"p-4 mb-4 text-sm text-blue-800 rounded-lg dark:text-blue-400 " + theme.color} role="alert">
+    <div className={"p-4 mb-4 text-sm rounded-lg " + theme.color + " " +  theme.textColor} role="alert">
       <span className="font-medium">{type}</span> {message}
     </div>
 

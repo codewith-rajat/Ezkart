@@ -51,7 +51,7 @@ function ItemListPage({ user }) {
     return (
         <>
             <div className="bg-white mt-12 max-w-6xl mx-auto flex items-center justify-between px-9 py-12">
-                <span className='mx-2 text-red-500 text-2xl font-medium'>Welcome, {user.full_name}</span>
+                <span className='mx-2 text-red-500 text-2xl font-medium'>Welcome, {user.fullName}</span>
                 <div className='flex '>
                     <div className='flex items-center border-2 border-gray-500 rounded-md p-1 mr-2'>
                         <Input
