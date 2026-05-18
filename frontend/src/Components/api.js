@@ -20,29 +20,29 @@ export function getProductByIds(ids){
         return response.data;
     })
 }
-export function getProductList({sortBy,query,pageNumber,sortType}){
+    export function getProductList({sortBy,query,pageNumber,sortType}){
 
-    let params={};
-    if(sortBy){
-        params.sortBy=sortBy;
-    }
-    if(query){
-        params.search=query;
-    }
-    if(pageNumber){
-        params.page=pageNumber; 
-    }
+        let params={};
+        if(sortBy){
+            params.sortBy=sortBy;
+        }
+        if(query){
+            params.search=query;
+        }
+        if(pageNumber){
+            params.page=pageNumber; 
+        }
 
-    if(sortType){
-        params.sortType=sortType;
-    }
+        if(sortType){
+            params.sortType=sortType;
+        }
 
-    return axios.get(`${API_BASE_URL}/products`,{
-        params,
-    }).then(function(response){
-        return response.data;
-    });
-}
+        return axios.get(`${API_BASE_URL}/products`,{
+            params,
+        }).then(function(response){
+            return response.data;
+        });
+    }
 
 export function saveCart(cart){
     return axios.post(`${API_BASE_URL}/carts`,{data:cart},{

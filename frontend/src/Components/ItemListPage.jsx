@@ -33,10 +33,14 @@ function ItemListPage({ user }) {
             sortBy = 'price';
             sortType = 'desc';
         }
-        getProductList({ sortBy, query, pageNumber, sortType }).then(function (response) {
-            setProductData(response);
-            setLoading(false);
-        });
+        const timer = setTimeout(()=>{
+            getProductList({ sortBy, query, pageNumber, sortType })
+            .then(function (response) {
+                setProductData(response);
+                setLoading(false);
+            });
+        },500)
+        return () => clearTimeout(timer)
     }, [sort, query, pageNumber]);
 
     function handleQueryChange(event) {

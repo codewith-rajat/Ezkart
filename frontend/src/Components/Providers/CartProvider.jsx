@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { CartContext } from '../Contexts';
 import { getCart, getProductByIds, saveCart } from "../api";
 import { withUser } from "../withProvider";
+import { throttle } from "lodash";
 
 function CartProvider({ isLoggedIn, user, children }) {
     const [cart, setCart] = useState([]);
@@ -38,7 +39,8 @@ function CartProvider({ isLoggedIn, user, children }) {
         })
     }
 
-    const addToCart = useCallback(function (productId, count) {
+    const addToCart = useCallback(
+        throttle(function (productId, count) {
         const quantityMap = cart.reduce(function (m, cartItem) {
             if (cartItem && cartItem.product && cartItem.product.id) {
                 return { ...m, [cartItem.product.id]: cartItem.quantity }
@@ -48,7 +50,9 @@ function CartProvider({ isLoggedIn, user, children }) {
         const oldCount = quantityMap[productId] || 0;
         const newCart = { ...quantityMap, [productId]: oldCount + count };
         updateCart(newCart);
-    }, [cart]);
+    }, 500),[cart]);
+
+
     function updateCart(quantityMap) {
         if (isLoggedIn) {
             // Convert quantityMap to items array format that backend expects
